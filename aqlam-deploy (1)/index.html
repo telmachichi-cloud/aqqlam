@@ -1,1 +1,508 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="theme-color" content="#F6F3EE"/><meta name="description" content="AQLAM — A daily English learning companion for Moroccan STEM students"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/><link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Nunito+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet"/><title>AQLAM · أقلام</title><style>body{margin:0;background:#f6f3ee;font-family:"Nunito Sans",system-ui,-apple-system,sans-serif}</style><script defer="defer" src="/static/js/main.16104033.js"></script><link href="/static/css/main.d7918b3a.css" rel="stylesheet"></head><body><noscript>You need to enable JavaScript to run AQLAM.</noscript><div id="root"></div><form name="aqlam-eap-test" data-netlify="true" hidden><input name="participant_name"/><input name="participant_email"/><input name="field"/> <input name="test_type"/><input name="test_date"/><input name="total_score"/> <input name="total_possible"/><input name="percentage"/><input name="reading_score"/> <input name="vocabulary_score"/><input name="structure_score"/><input name="pre_calibration"/> <input name="post_calibration"/><input name="calibration_gap"/><input name="duration_seconds"/> <input name="individual_responses"/></form><form name="aqlam-consent" data-netlify="true" hidden><input name="email"/><input name="name"/><input name="consent_date"/><input name="version"/></form></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#EEF5FF"/>
+<meta name="description" content="AQLAM — A daily English learning companion for Moroccan STEM students"/>
+<title>AQLAM · أقلام</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Crimson+Pro:ital,wght@0,400;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --orange:     #E65100;
+  --orangeLight:#FFF3E0;
+  --orangeBorder:rgba(230,81,0,0.25);
+  --blue:       #1565C0;
+  --blueDim:    rgba(21,101,192,0.08);
+  --blueBorder: rgba(21,101,192,0.22);
+  --teal:       #00695C;
+  --tealDim:    rgba(0,105,92,0.08);
+  --tealBorder: rgba(0,105,92,0.22);
+  --coral:      #B71C1C;
+  --coralDim:   rgba(183,28,28,0.08);
+  --coralBorder:rgba(183,28,28,0.25);
+  --ink:        #0D1117;
+  --body:       #2C3E50;
+  --muted:      #607D8B;
+  --dim:        #90A4AE;
+  --border:     rgba(100,140,200,0.18);
+  --bg:         #EEF5FF;
+  --surface:    #ffffff;
+  --offwhite:   #F8F7F4;
+  --surfaceUp:  #F4F8FF;
+  --sans:  "DM Sans", system-ui, sans-serif;
+  --serif: "Crimson Pro", Georgia, serif;
+  --radius:   14px;
+  --radiusSm: 9px;
+  --shadow:   0 2px 16px rgba(21,101,192,0.07);
+  --shadowMd: 0 4px 24px rgba(21,101,192,0.11);
+}
+html, body { height: 100%; }
+body { font-family: var(--sans); background: var(--bg); color: var(--ink); -webkit-font-smoothing: antialiased; }
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 12px rgba(21,101,192,0.06);
+  height: 54px; display: flex; align-items: center; padding: 0 1.5rem;
+}
+.nav-inner { width: 100%; max-width: 700px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+.nav-left  { display: flex; align-items: center; gap: 10px; }
+.nav-uni   { font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); border-right: 1px solid var(--border); padding-right: 10px; }
+.nav-brand { font-size: 16px; font-weight: 800; color: var(--blue); letter-spacing: -.02em; cursor:pointer; }
+.nav-brand-ar { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 17px; color: var(--ink); margin-left: 4px; }
+.nav-right { display: flex; align-items: center; gap: 9px; }
+.streak-badge {
+  display: flex; align-items: center; gap: 6px;
+  background: linear-gradient(135deg, #FF8F00, #E65100);
+  border-radius: 20px; padding: 5px 13px;
+  font-size: 12px; font-weight: 700; color: #fff;
+  box-shadow: 0 2px 10px rgba(230,81,0,0.3);
+  cursor:pointer;
+}
+.avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--blue); color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; cursor:pointer; }
+.page { max-width: 700px; margin: 0 auto; padding: 1.6rem 1.5rem 5rem; display: flex; flex-direction: column; }
+.hero { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.1rem; }
+.hero-greeting { font-size: 27px; font-weight: 800; color: var(--ink); letter-spacing: -.02em; line-height: 1.15; }
+.hero-anchor   { font-size: 13px; color: var(--muted); }
+.hero-win {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--tealDim); border: 1px solid var(--tealBorder);
+  border-radius: 8px; padding: 6px 12px;
+  font-size: 12px; font-weight: 600; color: var(--teal);
+  align-self: flex-start; margin-top: 2px;
+}
+.stats-row { display: flex; gap: 8px; margin-bottom: 1.4rem; }
+.stat-card {
+  flex: 1; min-width: 0;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radiusSm); padding: 13px 14px 11px;
+  box-shadow: var(--shadow);
+}
+.stat-value { font-size: 21px; font-weight: 800; color: var(--blue); line-height: 1; margin-bottom: 3px; }
+.stat-of    { font-size: 12px; font-weight: 500; color: var(--dim); }
+.stat-label { font-size: 10px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.stat-bar   { height: 3px; background: var(--blueDim); border-radius: 4px; overflow: hidden; }
+.stat-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(to right, var(--blue), #42A5F5); }
+.rm-header {
+  background:#F5F8FF; border:1px solid var(--border);
+  border-bottom:none; border-radius:var(--radius) var(--radius) 0 0;
+  padding:1rem 1.3rem .9rem;
+  display:flex; align-items:flex-start; justify-content:space-between;
+}
+.rm-title { font-size:15px; font-weight:700; color:var(--text); margin-bottom:3px; }
+.rm-sub   { font-size:12px; color:var(--muted); }
+.tier-badge {
+  background:var(--coralDim); border:1px solid var(--coralBorder);
+  color:var(--coral); font-size:11px; font-weight:800;
+  border-radius:7px; padding:3px 9px; margin-top:2px;
+}
+.rm-carousel-zone { position:relative; padding:0 52px; }
+.rm-body {
+  background:#F5F8FF; border:1px solid var(--border);
+  border-top:none; overflow:hidden; position:relative; width:100%;
+}
+.rm-track { display:flex; transition:transform .45s cubic-bezier(.4,0,.2,1); will-change:transform; }
+.rm-slide { flex:0 0 100%; min-width:0; padding:6px 0 10px; }
+.rm-slide-label { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin-bottom:2px; padding:0 4px; }
+.rm-arrow {
+  position:absolute; top:50%; transform:translateY(-50%);
+  width:48px; height:48px; border-radius:50%;
+  background:linear-gradient(135deg,#FF8F00,#E65100);
+  border:3px solid #ffffff;
+  box-shadow:0 6px 20px rgba(230,81,0,0.45), 0 2px 6px rgba(0,0,0,0.2);
+  cursor:pointer; font-size:20px; color:#fff; font-weight:900;
+  display:flex; align-items:center; justify-content:center;
+  z-index:30; transition:transform .15s, box-shadow .15s;
+  user-select:none; line-height:1; min-width:48px; min-height:48px;
+}
+.rm-arrow:hover { transform:translateY(-50%) scale(1.12); box-shadow:0 10px 28px rgba(230,81,0,0.55), 0 2px 8px rgba(0,0,0,0.2); }
+.rm-arrow:active { transform:translateY(-50%) scale(0.97); }
+.rm-arrow:focus-visible { outline:3px solid #FF8F00; outline-offset:3px; }
+.rm-al { left:2px; } .rm-ar { right:2px; }
+.rm-progress {
+  background:#F5F8FF; border:1px solid var(--border);
+  border-top:1px solid rgba(100,140,200,0.12);
+  padding:10px 1.3rem; display:flex; align-items:center; gap:12px;
+}
+.rm-prog-text { font-size:11px; color:var(--muted); white-space:nowrap; }
+.rm-prog-text strong { color:var(--accent); font-weight:700; }
+.rm-prog-bar-wrap { flex:1; height:5px; background:rgba(100,140,200,0.15); border-radius:10px; overflow:hidden; }
+.rm-prog-bar { height:100%; width:12.5%; background:linear-gradient(to right,#1565C0,#42A5F5); border-radius:10px; animation:barGrow .9s cubic-bezier(.4,0,.2,1) .5s both; transform-origin:left; }
+@keyframes barGrow { from { width:0 } to { width:12.5% } }
+.rm-prog-pct { font-size:11px; font-weight:700; color:var(--accent); white-space:nowrap; }
+.rm-footer {
+  background:#F5F8FF; border:1px solid var(--border);
+  border-top:none; border-radius:0 0 var(--radius) var(--radius);
+  padding:8px 1.3rem 10px; display:flex; align-items:center; justify-content:space-between;
+}
+.rm-note { font-size:11px; color:var(--dim); font-style:italic; }
+.rm-dots { display:flex; gap:5px; }
+.rm-dot { width:6px; height:6px; border-radius:50%; background:rgba(100,140,200,0.25); cursor:pointer; transition:background .2s, transform .2s; }
+.rm-dot.on { background:var(--accent); transform:scale(1.25); }
+@keyframes rmDraw  { to { stroke-dashoffset:0 } }
+@keyframes rmPop   { from { transform:scale(0);opacity:0 } to { transform:scale(1);opacity:1 } }
+@keyframes rmPulse { 0%,100%{opacity:.15} 50%{opacity:.4} }
+@keyframes rmFade  { from { opacity:0;transform:translateY(4px) } to { opacity:1;transform:none } }
+.s-track  { fill:none; stroke-linecap:round; stroke-dasharray:1200; stroke-dashoffset:1200; animation:rmDraw 1.4s cubic-bezier(.4,0,.2,1) .1s forwards }
+.s-done   { fill:none; stroke-linecap:round; stroke-dasharray:600;  stroke-dashoffset:600;  animation:rmDraw 1s   cubic-bezier(.4,0,.2,1) .2s forwards }
+.s-node   { animation:rmPop .4s cubic-bezier(.34,1.56,.64,1) both }
+.s-pulse  { animation:rmPulse 2s ease-in-out 1.5s infinite; transform-box:fill-box; transform-origin:center }
+.s-lbl    { animation:rmFade .4s ease both }
+.node-group { cursor:pointer; }
+.node-group .tooltip { visibility:hidden; opacity:0; transition:opacity .15s; }
+.node-group:hover .tooltip { visibility:visible; opacity:1; }
+.action-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1.2rem 1.4rem;
+  box-shadow: var(--shadowMd); margin-bottom: 1rem; position: relative; overflow: hidden;
+}
+.action-card::before {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 4px; background: linear-gradient(to bottom, #FF8F00, #E65100);
+  border-radius: 4px 0 0 4px;
+}
+.action-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--orange); margin-bottom: 5px; }
+.action-title   { font-size: 16px; font-weight: 700; color: var(--ink); margin-bottom: 12px; }
+.action-prog-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.action-prog-track { flex: 1; height: 6px; background: var(--blueDim); border-radius: 6px; overflow: hidden; }
+.action-prog-fill  { height: 100%; width: 33%; background: linear-gradient(to right, var(--blue), #42A5F5); border-radius: 6px; animation: barGrow2 .9s cubic-bezier(.4,0,.2,1) .3s both; }
+@keyframes barGrow2 { from{width:0} to{width:33%} }
+.action-prog-lbl { font-size: 11px; color: var(--muted); white-space: nowrap; }
+.action-cta {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 12px;
+  background: linear-gradient(135deg, #1565C0, #1976D2);
+  color: #fff; border: none; border-radius: 10px;
+  font-family: var(--sans); font-size: 14px; font-weight: 700;
+  cursor: pointer; box-shadow: 0 4px 18px rgba(21,101,192,0.3);
+  transition: opacity .15s, transform .15s;
+}
+.action-cta:hover  { opacity: .92; transform: translateY(-1px); }
+.action-cta:active { transform: translateY(0); }
+.nudge-card {
+  border-radius: var(--radius); overflow: hidden;
+  background: linear-gradient(135deg, #0D47A1 0%, #1565C0 45%, #1976D2 100%);
+  padding: 1.4rem 1.7rem; position: relative;
+  box-shadow: 0 8px 28px rgba(21,101,192,0.3); margin-bottom: 1rem;
+}
+.nudge-card::before { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 65%); pointer-events: none; }
+.nudge-card::after { content: "C"; font-family: var(--serif); font-size: 130px; font-weight: 600; line-height: 1; color: rgba(255,255,255,0.06); position: absolute; right: 1rem; bottom: -16px; pointer-events: none; user-select: none; z-index: 0; }
+.nudge-tag { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.22); border-radius: 20px; padding: 4px 12px; font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,0.9); margin-bottom: 12px; position: relative; z-index: 1; }
+.nudge-text { font-family: var(--serif); font-size: 17px; font-style: italic; color: #fff; line-height: 1.75; position: relative; z-index: 1; }
+.nudge-text strong { font-style: normal; font-weight: 600; background: rgba(255,255,255,0.17); border-radius: 4px; padding: 1px 5px; }
+.nudge-footer { margin-top: 10px; font-size: 11px; color: rgba(255,255,255,0.4); display: flex; justify-content: space-between; position: relative; z-index: 1; }
+.nudge-action { margin-top: 10px; font-size: 12px; color: rgba(255,255,255,0.62); display: flex; align-items: center; gap: 6px; position: relative; z-index: 1; font-style: italic; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; }
+.sessions-card { background: var(--offwhite); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+.sessions-head { padding: .9rem 1.2rem .6rem; display: flex; align-items: center; justify-content: space-between; }
+.sec-label { font-size: 10px; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; color: var(--blue); }
+.sec-link  { font-size: 11px; font-weight: 600; color: var(--blue); opacity: .6; text-decoration: none; cursor: pointer; }
+table { width: 100%; border-collapse: collapse; }
+thead th { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--dim); padding: 7px 13px; text-align: left; background: #F0EDE8; border-bottom: 1px solid rgba(180,160,140,0.2); }
+tbody tr { border-bottom: 1px solid rgba(180,160,140,0.16); transition: background .12s; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: #F2EFE9; }
+tbody td { padding: 11px 13px; font-size: 13px; vertical-align: top; }
+.s-name { font-weight: 600; color: var(--ink); }
+.s-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.badge { display: inline-block; border-radius: 20px; padding: 3px 9px; font-size: 10px; font-weight: 700; letter-spacing: .04em; }
+.badge-applied  { background: var(--tealDim);  color: var(--teal); border: 1px solid var(--tealBorder); }
+.badge-learning { background: var(--blueDim); color: var(--blue); border: 1px solid var(--blueBorder); }
+.nav-links { display:flex; align-items:center; gap:2px; }
+.nav-link { font-size:12px; font-weight:600; color:var(--muted); text-decoration:none; padding:5px 10px; border-radius:7px; transition:background .15s, color .15s; cursor:pointer; }
+.nav-link:hover { background:var(--blueDim); color:var(--blue); }
+.nav-link-active { color:var(--blue); background:var(--blueDim); }
+@media(max-width:540px){ .nav-links { display:none; } }
+/* ── SECTION PAGES ── */
+.view { display:none; }
+.view.active { display:flex; flex-direction:column; }
+.placeholder-page { padding: 3rem 1.5rem; max-width:700px; margin:0 auto; }
+.placeholder-page h2 { font-size:22px; font-weight:800; color:var(--ink); margin-bottom:.5rem; }
+.placeholder-page p  { font-size:14px; color:var(--muted); }
+.back-btn {
+  display:inline-flex; align-items:center; gap:6px;
+  font-size:13px; font-weight:600; color:var(--blue);
+  background:var(--blueDim); border:none; border-radius:8px;
+  padding:8px 14px; cursor:pointer; margin-bottom:1.5rem;
+  transition:opacity .15s;
+}
+.back-btn:hover { opacity:.8; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-left">
+      <span class="nav-uni">Ibn Tofail</span>
+      <div onclick="navigate('home')" style="text-decoration:none;cursor:pointer">
+        <div class="nav-brand">AQLAM<span class="nav-brand-ar">· أقلام</span></div>
+      </div>
+    </div>
+    <div class="nav-right">
+      <nav class="nav-links">
+        <span id="nav-home"     class="nav-link nav-link-active" onclick="navigate('home')">Home</span>
+        <span id="nav-session"  class="nav-link" onclick="navigate('session')">Session</span>
+        <span id="nav-progress" class="nav-link" onclick="navigate('progress')">Progress</span>
+        <span id="nav-checkin"  class="nav-link" onclick="navigate('checkin')">Check-in</span>
+      </nav>
+      <div class="streak-badge" onclick="navigate('progress')">
+        <svg width="9" height="14" viewBox="0 0 9 14" fill="none"><path d="M5.5 0.5L0.5 7.5H4.5L3.5 13.5L8.5 6.5H4.5L5.5 0.5Z" fill="white" stroke="rgba(255,255,255,0.3)" stroke-width="0.3"/></svg>
+        10-day streak
+      </div>
+      <div class="avatar" onclick="navigate('profile')">M</div>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ VIEW: HOME ══ -->
+<div id="view-home" class="view active">
+<div class="page">
+  <div class="hero">
+    <div class="hero-greeting">Good afternoon, med</div>
+    <div class="hero-anchor">Friday · 10 Apr 2026 · Active today</div>
+    <div class="hero-win">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <line x1="7" y1="1" x2="7" y2="3.5" stroke="#00695C" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="7" y1="10.5" x2="7" y2="13" stroke="#00695C" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="1" y1="7" x2="3.5" y2="7" stroke="#00695C" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="10.5" y1="7" x2="13" y2="7" stroke="#00695C" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="2.9" y1="2.9" x2="4.7" y2="4.7" stroke="#00695C" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="9.3" y1="9.3" x2="11.1" y2="11.1" stroke="#00695C" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="11.1" y1="2.9" x2="9.3" y2="4.7" stroke="#00695C" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="4.7" y1="9.3" x2="2.9" y2="11.1" stroke="#00695C" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="7" cy="7" r="2" fill="#00695C"/>
+      </svg>
+      You applied GIST correctly yesterday — great work
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-value">10<span class="stat-of">/30</span></div>
+      <div class="stat-label">Sessions done</div>
+      <div class="stat-bar"><div class="stat-bar-fill" style="width:33%"></div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">B1</div>
+      <div class="stat-label">Level → B2</div>
+      <div class="stat-bar"><div class="stat-bar-fill" style="width:55%"></div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">4<span class="stat-of">/8</span></div>
+      <div class="stat-label">Unlocked</div>
+      <div class="stat-bar"><div class="stat-bar-fill" style="width:50%"></div></div>
+    </div>
+  </div>
+  <div>
+    <div class="rm-header">
+      <div>
+        <div class="rm-title">10 sessions completed</div>
+        <div class="rm-sub">Level: B1 &middot; Next: Read &amp; Reconstruct</div>
+      </div>
+      <div class="tier-badge">T3</div>
+    </div>
+    <div class="rm-carousel-zone">
+      <button class="rm-arrow rm-al" id="aL" onclick="go(-1)" aria-label="Previous slide" title="Previous slide">&#8592;</button>
+      <button class="rm-arrow rm-ar" id="aR" onclick="go(1)" aria-label="Next slide" title="Next slide">&#8594;</button>
+      <div class="rm-body">
+        <div class="rm-track" id="track">
+          <div class="rm-slide">
+            <div class="rm-slide-label">Where you are</div>
+            <svg viewBox="0 0 380 152" style="width:100%;display:block;overflow:visible">
+              <defs>
+                <linearGradient id="pathGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#1565C0"/>
+                  <stop offset="15%" stop-color="#1565C0" stop-opacity="0.5"/>
+                  <stop offset="30%" stop-color="#90A4AE" stop-opacity="0.4"/>
+                  <stop offset="100%" stop-color="#90A4AE" stop-opacity="0.3"/>
+                </linearGradient>
+                <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="4" result="blur"/>
+                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+              </defs>
+              <path d="M 40 100 C 80 100 80 48 128 48 C 176 48 176 100 224 100 C 272 100 272 48 320 48" fill="none" stroke="rgba(144,164,174,0.35)" stroke-width="5" stroke-linecap="round" stroke-dasharray="8 5"/>
+              <path class="s-done" d="M 40 100 C 48 100 52 100 60 100" stroke="url(#pathGrad1)" stroke-width="5"/>
+              <text class="s-lbl" x="128" y="30" text-anchor="middle" fill="#90A4AE" font-size="9" font-weight="700" font-family="DM Sans,sans-serif" style="animation-delay:.52s">GIST</text>
+              <text class="s-lbl" x="320" y="30" text-anchor="middle" fill="#90A4AE" font-size="9" font-weight="700" font-family="DM Sans,sans-serif" style="animation-delay:.76s">Dictogloss</text>
+              <text class="s-lbl" x="40" y="130" text-anchor="middle" fill="#1565C0" font-size="9" font-weight="800" font-family="DM Sans,sans-serif" style="animation-delay:.4s">Reconstruct</text>
+              <text class="s-lbl" x="224" y="130" text-anchor="middle" fill="#90A4AE" font-size="9" font-weight="700" font-family="DM Sans,sans-serif" style="animation-delay:.64s">Word Inf.</text>
+              <g class="s-node node-group" style="animation-delay:.3s;transform-origin:40px 100px">
+                <circle class="s-pulse" cx="40" cy="100" r="28" fill="#1565C0" opacity="0.12"/>
+                <circle cx="40" cy="100" r="22" fill="none" stroke="#1565C0" stroke-width="2" opacity="0.25"/>
+                <circle cx="40" cy="100" r="17" fill="#1565C0" filter="url(#glow)"/>
+                <text x="40" y="104.5" text-anchor="middle" fill="#fff" font-size="11" font-weight="800" font-family="DM Sans,sans-serif">1</text>
+                <g class="tooltip"><rect x="2" y="55" width="114" height="34" rx="6" fill="#0A1929" opacity="0.92"/><text x="59" y="68" text-anchor="middle" fill="#fff" font-size="9" font-weight="700" font-family="DM Sans,sans-serif">Read &amp; Reconstruct</text><text x="59" y="81" text-anchor="middle" fill="#90A4AE" font-size="8" font-family="DM Sans,sans-serif">Read, hide, rewrite from memory</text></g>
+              </g>
+              <g class="s-node node-group" style="animation-delay:.44s;transform-origin:128px 48px">
+                <circle cx="128" cy="48" r="17" fill="rgba(244,248,255,0.92)" stroke="rgba(144,164,174,0.5)" stroke-width="1.5" stroke-dasharray="5 3"/>
+                <text x="128" y="52.5" text-anchor="middle" fill="#90A4AE" font-size="11" font-weight="800" font-family="DM Sans,sans-serif">2</text>
+                <g class="tooltip"><rect x="70" y="5" width="96" height="34" rx="6" fill="#0A1929" opacity="0.92"/><text x="118" y="18" text-anchor="middle" fill="#fff" font-size="9" font-weight="700" font-family="DM Sans,sans-serif">GIST Summary</text><text x="118" y="31" text-anchor="middle" fill="#90A4AE" font-size="8" font-family="DM Sans,sans-serif">Summarise in 20 words or less</text></g>
+              </g>
+              <g class="s-node node-group" style="animation-delay:.58s;transform-origin:224px 100px">
+                <circle cx="224" cy="100" r="17" fill="rgba(244,248,255,0.92)" stroke="rgba(144,164,174,0.5)" stroke-width="1.5" stroke-dasharray="5 3"/>
+                <text x="224" y="104.5" text-anchor="middle" fill="#90A4AE" font-size="11" font-weight="800" font-family="DM Sans,sans-serif">3</text>
+                <g class="tooltip"><rect x="166" y="57" width="100" height="34" rx="6" fill="#0A1929" opacity="0.92"/><text x="216" y="70" text-anchor="middle" fill="#fff" font-size="9" font-weight="700" font-family="DM Sans,sans-serif">Word Inference</text><text x="216" y="83" text-anchor="middle" fill="#90A4AE" font-size="8" font-family="DM Sans,sans-serif">Guess meaning from context</text></g>
+              </g>
+              <g class="s-node node-group" style="animation-delay:.72s;transform-origin:320px 48px">
+                <circle cx="320" cy="48" r="17" fill="rgba(244,248,255,0.92)" stroke="rgba(144,164,174,0.5)" stroke-width="1.5" stroke-dasharray="5 3"/>
+                <text x="320" y="52.5" text-anchor="middle" fill="#90A4AE" font-size="11" font-weight="800" font-family="DM Sans,sans-serif">4</text>
+                <g class="tooltip"><rect x="234" y="5" width="100" height="34" rx="6" fill="#0A1929" opacity="0.92"/><text x="284" y="18" text-anchor="middle" fill="#fff" font-size="9" font-weight="700" font-family="DM Sans,sans-serif">Dictogloss</text><text x="284" y="31" text-anchor="middle" fill="#90A4AE" font-size="8" font-family="DM Sans,sans-serif">Listen, reconstruct, compare</text></g>
+              </g>
+            </svg>
+          </div>
+          <div class="rm-slide">
+            <div class="rm-slide-label">What's still ahead</div>
+            <svg viewBox="0 0 340 152" style="width:100%;display:block;overflow:visible">
+              <rect x="8" y="68" width="202" height="58" rx="10" fill="#00695C" opacity="0.04"/>
+              <path d="M 40 100 C 88 100 88 48 136 48 C 184 48 184 100 232 100 C 256 100 256 60 284 60" fill="none" stroke="rgba(144,164,174,0.35)" stroke-width="5" stroke-linecap="round" stroke-dasharray="8 5"/>
+              <text class="s-lbl" x="136" y="30" text-anchor="middle" fill="#90A4AE" font-size="9" font-weight="700" font-family="DM Sans,sans-serif" style="animation-delay:.52s">Notes</text>
+              <text class="s-lbl" x="284" y="40" text-anchor="middle" fill="#90A4AE" font-size="9" font-weight="700" font-family="DM Sans,sans-serif" style="animation-delay:.76s">Retrieval</text>
+              <text class="s-lbl" x="40" y="130" text-anchor="middle" fill="#90A4AE" font-size="9" font-weight="700" font-family="DM Sans,sans-serif" style="animation-delay:.4s">Circumloc.</text>
+              <text class="s-lbl" x="232" y="130" text-anchor="middle" fill="#90A4AE" font-size="9" font-weight="700" font-family="DM Sans,sans-serif" style="animation-delay:.64s">Outline</text>
+              <g class="s-node node-group" style="animation-delay:.3s"><circle cx="40" cy="100" r="17" fill="rgba(244,248,255,0.92)" stroke="rgba(144,164,174,0.5)" stroke-width="1.5" stroke-dasharray="5 3"/><text x="40" y="104.5" text-anchor="middle" fill="#90A4AE" font-size="11" font-weight="800" font-family="DM Sans,sans-serif">5</text></g>
+              <g class="s-node node-group" style="animation-delay:.44s"><circle cx="136" cy="48" r="17" fill="rgba(244,248,255,0.92)" stroke="rgba(144,164,174,0.5)" stroke-width="1.5" stroke-dasharray="5 3"/><text x="136" y="52.5" text-anchor="middle" fill="#90A4AE" font-size="11" font-weight="800" font-family="DM Sans,sans-serif">6</text></g>
+              <g class="s-node node-group" style="animation-delay:.58s"><circle cx="232" cy="100" r="17" fill="rgba(244,248,255,0.92)" stroke="rgba(144,164,174,0.5)" stroke-width="1.5" stroke-dasharray="5 3"/><text x="232" y="104.5" text-anchor="middle" fill="#90A4AE" font-size="11" font-weight="800" font-family="DM Sans,sans-serif">7</text></g>
+              <g class="s-node node-group" style="animation-delay:.72s"><circle cx="284" cy="60" r="17" fill="rgba(244,248,255,0.92)" stroke="rgba(179,96,0,0.35)" stroke-width="1.5" stroke-dasharray="5 3"/><text x="284" y="64.5" text-anchor="middle" fill="#B36000" font-size="11" font-weight="800" font-family="DM Sans,sans-serif">8</text></g>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="rm-progress">
+      <span class="rm-prog-text"><strong>1</strong> of 8 strategies complete</span>
+      <div class="rm-prog-bar-wrap"><div class="rm-prog-bar"></div></div>
+      <span class="rm-prog-pct">12%</span>
+    </div>
+    <div class="rm-footer">
+      <span class="rm-note">Progress is based on your performance — keep applying each strategy deliberately.</span>
+      <div class="rm-dots">
+        <div class="rm-dot on" id="d0" onclick="go(-99)"></div>
+        <div class="rm-dot" id="d1" onclick="go(99)"></div>
+      </div>
+    </div>
+  </div>
+  <div class="action-card">
+    <div class="action-eyebrow">Today's Learning Loop</div>
+    <div class="action-title">Continue with Read &amp; Reconstruct · B1</div>
+    <div class="action-prog-row">
+      <div class="action-prog-track"><div class="action-prog-fill"></div></div>
+      <span class="action-prog-lbl">1 of 3 sessions today</span>
+    </div>
+    <button class="action-cta" onclick="navigate('session')">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 2L12 7L3 12V2Z" fill="white"/></svg>
+      Continue Learning
+    </button>
+  </div>
+  <div class="nudge-card">
+    <div class="nudge-tag">
+      <svg width="14" height="11" viewBox="0 0 14 11" fill="none"><path d="M1 5.5 Q2.5 1.5 4 5.5 Q5.5 9.5 7 5.5 Q8.5 1.5 10 5.5 Q11.5 9.5 13 5.5" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+      Today's Strategy Nudge
+    </div>
+    <div class="nudge-text">Pay attention to signal words today: <strong>however</strong>, <strong>therefore</strong>, <strong>consequently</strong> — they carry the argument.</div>
+    <div class="nudge-footer"><span>Read &amp; Reconstruct · B1</span><span>10 Apr 2026</span></div>
+    <div class="nudge-action">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6H10M7 3L10 6L7 9" stroke="rgba(255,255,255,0.65)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Try it — find 3 signal words in your next text
+    </div>
+  </div>
+  <div class="sessions-card">
+    <div class="sessions-head">
+      <div class="sec-label">Recent Sessions</div>
+      <span class="sec-link" onclick="navigate('session')">View all →</span>
+    </div>
+    <table>
+      <thead><tr><th>Topic</th><th>Strategy · Date</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr style="cursor:pointer" onclick="navigate('session')"><td><div class="s-name">Machine Learning</div></td><td><div class="s-meta">Read &amp; Reconstruct · 10 Apr</div></td><td><span class="badge badge-applied">APPLIED</span></td></tr>
+        <tr style="cursor:pointer" onclick="navigate('session')"><td><div class="s-name">Operating Systems</div></td><td><div class="s-meta">GIST Summary · 9 Apr</div></td><td><span class="badge badge-applied">APPLIED</span></td></tr>
+        <tr style="cursor:pointer" onclick="navigate('session')"><td><div class="s-name">Computer Networks</div></td><td><div class="s-meta">Word Inference · 8 Apr</div></td><td><span class="badge badge-learning">LEARNING</span></td></tr>
+        <tr style="cursor:pointer" onclick="navigate('session')"><td><div class="s-name">Data Structures</div></td><td><div class="s-meta">GIST Summary · 7 Apr</div></td><td><span class="badge badge-learning">LEARNING</span></td></tr>
+        <tr style="cursor:pointer" onclick="navigate('session')"><td><div class="s-name">Binary Encoding</div></td><td><div class="s-meta">Read &amp; Reconstruct · 6 Apr</div></td><td><span class="badge badge-applied">APPLIED</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+<!-- ══ VIEW: SESSION ══ -->
+<div id="view-session" class="view">
+  <div class="placeholder-page">
+    <button class="back-btn" onclick="navigate('home')">&#8592; Back to Home</button>
+    <h2>📖 Session</h2>
+    <p>Your learning session content will appear here.</p>
+  </div>
+</div>
+
+<!-- ══ VIEW: PROGRESS ══ -->
+<div id="view-progress" class="view">
+  <div class="placeholder-page">
+    <button class="back-btn" onclick="navigate('home')">&#8592; Back to Home</button>
+    <h2>📊 Progress</h2>
+    <p>Your progress tracking will appear here.</p>
+  </div>
+</div>
+
+<!-- ══ VIEW: CHECKIN ══ -->
+<div id="view-checkin" class="view">
+  <div class="placeholder-page">
+    <button class="back-btn" onclick="navigate('home')">&#8592; Back to Home</button>
+    <h2>✅ Check-in</h2>
+    <p>Your daily check-in will appear here.</p>
+  </div>
+</div>
+
+<!-- ══ VIEW: PROFILE ══ -->
+<div id="view-profile" class="view">
+  <div class="placeholder-page">
+    <button class="back-btn" onclick="navigate('home')">&#8592; Back to Home</button>
+    <h2>👤 Profile</h2>
+    <p>Your profile and settings will appear here.</p>
+  </div>
+</div>
+
+<script>
+  // ── ROUTER ──
+  const views = ['home','session','progress','checkin','profile'];
+  function navigate(page) {
+    views.forEach(v => {
+      document.getElementById('view-' + v).classList.toggle('active', v === page);
+    });
+    ['home','session','progress','checkin'].forEach(v => {
+      const el = document.getElementById('nav-' + v);
+      if (el) el.classList.toggle('nav-link-active', v === page);
+    });
+    const path = page === 'home' ? '/' : '/' + page;
+    history.pushState({ page }, '', path);
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener('popstate', e => {
+    const page = e.state && e.state.page ? e.state.page : 'home';
+    navigate(page);
+  });
+  (function() {
+    const path = window.location.pathname.replace('/', '') || 'home';
+    const page = views.includes(path) ? path : 'home';
+    navigate(page);
+  })();
+
+  // ── CAROUSEL ──
+  let cur = 0;
+  const track = document.getElementById('track');
+  const aL = document.getElementById('aL');
+  const aR = document.getElementById('aR');
+  function goTo(i) {
+    cur = i;
+    track.style.transform = 'translateX(-' + cur * 100 + '%)';
+    document.getElementById('d0').classList.toggle('on', cur === 0);
+    document.getElementById('d1').classList.toggle('on', cur === 1);
+    aL.style.display = cur === 0 ? 'none' : 'flex';
+    aR.style.display = cur === 1 ? 'none' : 'flex';
+  }
+  function go(d) { goTo(Math.max(0, Math.min(1, cur + d))); }
+  goTo(0);
+</script>
+</body>
+</html>
